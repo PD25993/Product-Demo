@@ -3,6 +3,8 @@ package com.springboot.productdemo.web.controllers;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,13 +24,18 @@ public class ProductMvcController {
 	@RequestMapping(value="/home")
 	public ModelAndView loadHome(ModelAndView model) {
 		model.addObject("activeWelcome","active");
-		model.addObject("ROLE", "ROLE_USER");
+		//Authentication authDetail = SecurityContextHolder.getContext().getAuthentication();
+		//model.addObject("ROLE", "ROLE_USER");
+		//model.addObject("role", authDetail.getAuthorities());
 		model.setViewName("home");
 		return model;
 	}
 	@RequestMapping(value="/user/listproduct")
 	public ModelAndView showProduct(ModelAndView model) {
-		model.addObject("role", "ROLE_USER");
+		//model.addObject("role", "ROLE_USER");
+		//Authentication authDetail = SecurityContextHolder.getContext().getAuthentication();
+		//System.out.println("Auth : " + authDetail.getAuthorities());
+		//model.addObject("role", authDetail.getAuthorities());
 		model.setViewName("show-product");
 		model.addObject("activeUserListProduct","active");
 		model.addObject("listProducts",productMvcService.retrieveAllProducts());
@@ -38,7 +45,9 @@ public class ProductMvcController {
 	@RequestMapping(value="/user/home")
 	public ModelAndView loadUserHome(ModelAndView model) {	
 		System.out.println("In loadUserHome");
-		model.addObject("role", "ROLE_USER");
+		//Authentication authDetail = SecurityContextHolder.getContext().getAuthentication();
+		//model.addObject("role", authDetail.getAuthorities());
+		//model.addObject("role", "ROLE_USER");
 		model.setViewName("welcome");
 		model.addObject("activeWelcome","active");
 		return model;
@@ -53,8 +62,11 @@ public class ProductMvcController {
 	}
 	@RequestMapping(value="/admin/home")
 	public ModelAndView loadAdminHome(ModelAndView model) {	
-		System.out.println("In loadAdminHome");
-		model.addObject("role", "ROLE_ADMIN");
+		Authentication authDetail = SecurityContextHolder.getContext().getAuthentication();
+		model.addObject("role", authDetail.getAuthorities());
+		//model.addObject("role", "ROLE_ADMIN");
+		System.out.println("Auth : " + authDetail.getAuthorities());
+		model.addObject("userName",authDetail.getName());
 		model.setViewName("welcome");
 		model.addObject("activeWelcome","active");
 		return model;
@@ -66,10 +78,13 @@ public class ProductMvcController {
 	}
 	@RequestMapping(value="/admin/listproduct")
 	public ModelAndView showAdminProduct(ModelAndView model) {
-		model.addObject("role", "ROLE_ADMIN");
+		//model.addObject("role", "ROLE_ADMIN");
+		Authentication authDetail = SecurityContextHolder.getContext().getAuthentication();
+		model.addObject("role", authDetail.getAuthorities());
 		model.setViewName("show-product");
 		model.addObject("listProducts",productMvcService.retrieveAllProducts());
 		model.addObject("activeListProduct","active");
+		model.addObject("userName",authDetail.getName());
 		return model;
 	}
 
@@ -83,7 +98,10 @@ public class ProductMvcController {
 	@RequestMapping(value="/admin/addproduct")
 	public ModelAndView addProduct(ModelAndView model) {
 		model.setViewName("add-product");
-		model.addObject("role", "ROLE_ADMIN");
+		//model.addObject("role", "ROLE_ADMIN");
+		Authentication authDetail = SecurityContextHolder.getContext().getAuthentication();
+		model.addObject("role", authDetail.getAuthorities());
+		model.addObject("userName",authDetail.getName());
 		model.addObject("command",new Product());
 		model.addObject("reqMethod","POST");
 		model.addObject("activeMngProduct","active");
@@ -91,7 +109,7 @@ public class ProductMvcController {
 	}
 	@RequestMapping(value="/admin/save")    
 	public String saveProduct(@ModelAttribute("product") Product product) throws IOException{ 
-		System.out.println("Test");
+		//System.out.println("Test");
 		productMvcService.addProduct(product);
 		return "redirect:/admin/listproduct";
 	}  
@@ -99,13 +117,16 @@ public class ProductMvcController {
 	public ModelAndView updateProduct(@PathVariable Integer id,Product product) {
 		Product productDetailsReturnByRest = null;
 		ModelAndView model = new ModelAndView("add-product");
-		model.addObject("role", "ROLE_ADMIN");
+		//model.addObject("role", "ROLE_ADMIN");
+		Authentication authDetail = SecurityContextHolder.getContext().getAuthentication();
+		model.addObject("role", authDetail.getAuthorities());
 		model.addObject("reqMethod","PUT");
 		try {
 		productDetailsReturnByRest = productMvcService.retrieveProductById(id);
 		if(null != productDetailsReturnByRest) {
 			model.addObject("command",productDetailsReturnByRest);
 			model.addObject("activeMngProduct","active");
+			model.addObject("userName",authDetail.getName());
 			}
 		}
 		catch(Exception e)

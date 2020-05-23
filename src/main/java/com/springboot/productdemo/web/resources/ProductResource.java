@@ -30,7 +30,7 @@ public class ProductResource {
 	ProductDao productDao;
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE/* ,value = "/product" */)
-    public ResponseEntity<List<Product>> getAllProducts() {
+    public ResponseEntity<List<Product>> getAllProducts()  {
         List<Product> productList = productDao.getAllProducts();
         return new ResponseEntity<List<Product>>(productList, new HttpHeaders(), HttpStatus.OK);
     }

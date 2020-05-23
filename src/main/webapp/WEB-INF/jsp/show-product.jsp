@@ -13,7 +13,7 @@
 					<th>Price</th>
 					<th>Category</th>
 					<c:choose>
-						<c:when test="${role == 'ROLE_ADMIN'}">
+						<c:when test="${fn:contains(role, 'ROLE_ADMIN')}">
 							<th>Actions</th>
 						</c:when>
 					</c:choose>
@@ -29,7 +29,7 @@
 						<td>${product.productPrice}</td>
 						<td>${product.productCategory}</td>
 						<c:choose>
-							<c:when test="${role == 'ROLE_ADMIN'}">
+							<c:when test="${fn:contains(role, 'ROLE_ADMIN')}">
 								<td><a class="btn btn-success"
 									href="/admin/edit/${product.id}">Update</a> <a
 									class="btn btn-danger" href="/admin/deleteProduct/${product.id}">Delete</a>
@@ -43,7 +43,7 @@
 		</table>
 		<div id="add" class="w3-container">
 			<c:choose>
-				<c:when test="${role == 'ROLE_ADMIN'}">
+				<c:when test="${fn:contains(role, 'ROLE_ADMIN')}">
 
 					<a class="btn btn-success" href="/admin/addproduct">Add</a>
 					
