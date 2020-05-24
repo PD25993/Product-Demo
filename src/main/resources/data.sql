@@ -1,10 +1,16 @@
-INSERT INTO PRODUCT (id, product_code, product_category, product_name, product_price) 
-VALUES(1,  'P01', 'Electronics', 'Mobile', 20000.50);
-INSERT INTO PRODUCT (id, product_code, product_category, product_name, product_price) 
-VALUES(2,  'P02', 'Electronics', 'EarPhone', 1000.00);
-INSERT INTO PRODUCT (id, product_code, product_category, product_name, product_price) 
-VALUES(3,  'P03', 'Electronics', 'Battery', 4000.50);
+INSERT INTO Category (category_id, category_name) 
+VALUES(1,'ELECTRONICS');
+INSERT INTO Category (category_id, category_name) 
+VALUES(2,'Clothing');
 
-insert into users (id, user_name, password, roles) values (1,'poulami','pass','ROLE_ADMIN,ROLE_USER');
-insert into users (id, user_name, password, roles) values (2,'mou','123456','ROLE_ADMIN');
-insert into users (id, user_name, password, roles) values (3,'parth','123456','ROLE_USER');
+INSERT INTO PRODUCTS (id, product_code, product_name, product_price,category_id) 
+VALUES(1,  'P01', 'Mobile', 20000.50, 1);
+INSERT INTO PRODUCTS (id, product_code, product_name, product_price, category_id) 
+VALUES(2,  'P02', 'EarPhone', 1000.00, 1);
+INSERT INTO PRODUCTS (id, product_code, product_name, product_price, category_id) VALUES(3,'P03','Skirt', 4000.50, 2);
+INSERT INTO PRODUCTS (id, product_code, product_name, product_price, category_id) VALUES(4,'P04','Dress', 5000, 2);
+-- 
+
+-- insert into users (id, user_name, password, roles) values (1,'poulami','pass','ROLE_ADMIN,ROLE_USER');
+-- insert into users (id, user_name, password, roles) values (2,'mou','123456','ROLE_ADMIN');
+-- insert into users (id, user_name, password, roles) values (3,'parth','123456','ROLE_USER');

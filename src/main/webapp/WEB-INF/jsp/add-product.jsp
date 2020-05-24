@@ -31,7 +31,13 @@
 			</tr>
 			<tr>
 				<td>Category :</td>
-				<td><form:input path="productCategory" /></td>
+				<td>
+					<form:select path="category_id" >
+					<c:forEach var="category" items="${listCategory}">
+					<form:option value="${category.id}">${category.categoryName} </form:option>
+					</c:forEach>
+					</form:select>
+				</td>
 			</tr>
 		</table>
 		<button type="submit" class="btn btn-success">Submit</button>

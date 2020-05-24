@@ -21,7 +21,7 @@ public class ProductMvcService {
 	
 	//RestTemplate restTemplate=new RestTemplate();
 
-	private static final String RESOURCE_PATH = "/rest";
+	private static final String RESOURCE_PATH = "/rest/product";
 	private String host="http://localhost";
 	private String port="8080";
 	private String REQUEST_URI = host + ":" + port + RESOURCE_PATH;

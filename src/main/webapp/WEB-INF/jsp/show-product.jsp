@@ -27,7 +27,7 @@
 						<td>${product.productCode}</td>
 						<td>${product.productName}</td>
 						<td>${product.productPrice}</td>
-						<td>${product.productCategory}</td>
+						<td>${product.category_id.categoryName}</td>
 						<c:choose>
 							<c:when test="${fn:contains(role, 'ROLE_ADMIN')}">
 								<td><a class="btn btn-success"

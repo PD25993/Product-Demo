@@ -1,6 +1,7 @@
 package com.springboot.productdemo.web.controllers;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.springboot.productdemo.web.models.Category;
 import com.springboot.productdemo.web.models.Product;
+import com.springboot.productdemo.web.services.CategoryMvcService;
 import com.springboot.productdemo.web.services.ProductMvcService;
 
 @Controller
@@ -20,6 +23,9 @@ public class ProductMvcController {
 
 	@Autowired
 	ProductMvcService productMvcService;
+	
+	@Autowired
+	CategoryMvcService categoryMvcService;
 
 	@RequestMapping(value="/home")
 	public ModelAndView loadHome(ModelAndView model) {
@@ -39,6 +45,10 @@ public class ProductMvcController {
 		model.setViewName("show-product");
 		model.addObject("activeUserListProduct","active");
 		model.addObject("listProducts",productMvcService.retrieveAllProducts());
+		for(Product p : productMvcService.retrieveAllProducts())
+		{
+		System.out.println("productMvcService.retrieveAllProducts() - "+p.getCategory_id());
+		}
 		System.out.println("In showProduct");
 		return model;
 	}
@@ -102,6 +112,12 @@ public class ProductMvcController {
 		Authentication authDetail = SecurityContextHolder.getContext().getAuthentication();
 		model.addObject("role", authDetail.getAuthorities());
 		model.addObject("userName",authDetail.getName());
+		List<Category> listCategory=categoryMvcService.retrieveAllCategorys();
+//		for(Category c : listCategory)
+//		{
+//			System.out.println(c.getCategoryName());
+//		}
+		model.addObject("listCategory",listCategory);
 		model.addObject("command",new Product());
 		model.addObject("reqMethod","POST");
 		model.addObject("activeMngProduct","active");
@@ -123,7 +139,9 @@ public class ProductMvcController {
 		model.addObject("reqMethod","PUT");
 		try {
 		productDetailsReturnByRest = productMvcService.retrieveProductById(id);
+		List<Category> listCategory=categoryMvcService.retrieveAllCategorys();
 		if(null != productDetailsReturnByRest) {
+			model.addObject("listCategory",listCategory);
 			model.addObject("command",productDetailsReturnByRest);
 			model.addObject("activeMngProduct","active");
 			model.addObject("userName",authDetail.getName());
@@ -140,6 +158,7 @@ public class ProductMvcController {
 	public String editSave(@ModelAttribute("product") Product product)throws IOException{ 
 		System.out.println("In updateProductB");
 		productMvcService.updateProduct(product);
+		//categoryMvcService.updateCategory(product.getCategory_id());
 		return "redirect:/admin/listproduct";
 		
 	}

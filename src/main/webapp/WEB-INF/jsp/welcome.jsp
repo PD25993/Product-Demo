@@ -3,12 +3,12 @@
 <h1 style="color: blue; text-align: center;">Welcome to apnabazar</h1>
 
 <c:choose>
-	<c:when test="${role == '[ROLE_ADMIN]'}">
+	<c:when test="${fn:contains(role, 'ROLE_ADMIN')}">
 		<h2 style="text-align: center;">You are authorized admin user to
 			view and manage product</h2>
 	</c:when>
 
-	<c:when test="${role != '[ROLE_ADMIN]'}">
+	<c:when test="${!fn:contains(role, 'ROLE_ADMIN')}">
 		<h2 style="text-align: center;">You are not a authorized admin
 			user. Please view the list of product</h2>
 	</c:when>

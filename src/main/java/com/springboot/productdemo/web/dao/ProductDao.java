@@ -54,7 +54,7 @@ public class ProductDao {
 				newEntity.setId(productEntity.getId());
 				newEntity.setProductName(productEntity.getProductName());
 				newEntity.setProductCode(productEntity.getProductCode());
-				newEntity.setProductCategory(productEntity.getProductCategory());
+				newEntity.setCategory_id(productEntity.getCategory_id());
 				newEntity.setProductPrice(productEntity.getProductPrice());
 
 				newEntity = productRepository.saveAndFlush(newEntity);
@@ -85,7 +85,7 @@ public class ProductDao {
 			existingProduct.setId(productEntity.getId());
 			existingProduct.setProductName(productEntity.getProductName());
 			existingProduct.setProductCode(productEntity.getProductCode());
-			existingProduct.setProductCategory(productEntity.getProductCategory());
+			existingProduct.setCategory_id(productEntity.getCategory_id());
 			existingProduct.setProductPrice(productEntity.getProductPrice());
 
 			existingProduct = productRepository.save(existingProduct);

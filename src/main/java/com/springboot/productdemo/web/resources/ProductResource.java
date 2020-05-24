@@ -23,7 +23,7 @@ import com.springboot.productdemo.web.dao.ProductDao;
 import com.springboot.productdemo.web.models.Product;
 
 @RestController
-@RequestMapping("/rest")
+@RequestMapping("/rest/product")
 public class ProductResource {
 
 	@Autowired
