@@ -13,12 +13,13 @@ public class MyUserDetails implements UserDetails{
 	private int id;
 	private String userName;
 	private String password;
+	private boolean isActive;
 	private List<GrantedAuthority> authorities;
 
 	public MyUserDetails(User user) {
 		this.userName = user.getUserName();
 		this.password = user.getPassword();
-
+		this.isActive = user.isActive();
 		this.authorities = Arrays.stream(user.getRoles().split(","))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
@@ -63,7 +64,7 @@ public class MyUserDetails implements UserDetails{
 	@Override
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
-		return true;
+		return isActive;
 	}
 
 }

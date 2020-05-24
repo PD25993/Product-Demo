@@ -64,23 +64,39 @@ public class ProductMvcController {
 	}
 	
 	@RequestMapping(value="/login")
-	public ModelAndView postLogin(ModelAndView model) {
+	public ModelAndView getLogin() {
+		ModelAndView model=new ModelAndView();
 		System.out.println("In loadAdminHome");
 		model.setViewName("login");
-		model.addObject("role", "ROLE_ADMIN");
-		return model;
-	}
-	@RequestMapping(value="/admin/home")
-	public ModelAndView loadAdminHome(ModelAndView model) {	
-		Authentication authDetail = SecurityContextHolder.getContext().getAuthentication();
-		model.addObject("role", authDetail.getAuthorities());
 		//model.addObject("role", "ROLE_ADMIN");
-		System.out.println("Auth : " + authDetail.getAuthorities());
-		model.addObject("userName",authDetail.getName());
-		model.setViewName("welcome");
-		model.addObject("activeWelcome","active");
 		return model;
 	}
+	
+	@RequestMapping("/")
+	public ModelAndView defaultHome() {
+		ModelAndView model=new ModelAndView();
+		Authentication authDetail = SecurityContextHolder.getContext().getAuthentication();
+		System.out.println("Auth : " + authDetail.getAuthorities()+" : "+authDetail.isAuthenticated());
+			model.addObject("role", authDetail.getAuthorities());
+			model.addObject("userName",authDetail.getName());
+			model.setViewName("welcome");
+			model.addObject("activeWelcome","active");
+			return model;
+	}
+	
+//	@RequestMapping(value="/admin/home")
+//	public ModelAndView loadAdminHome(ModelAndView model) {	
+//		Authentication authDetail = SecurityContextHolder.getContext().getAuthentication();
+//		model.addObject("role", authDetail.getAuthorities());
+//		//model.addObject("role", "ROLE_ADMIN");
+//		//System.out.println("Auth : " + authDetail.getAuthorities());
+//		model.addObject("userName",authDetail.getName());
+//		model.setViewName("welcome");
+//		model.addObject("activeWelcome","active");
+//		return model;
+//	}
+	
+	
 	@RequestMapping(value="/logout")
 	public ModelAndView logOutAction(ModelAndView model) {
 		model.setViewName("home");

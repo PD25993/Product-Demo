@@ -10,15 +10,24 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @ComponentScan(basePackages="com.springboot.productdemo.web")
 @EnableWebSecurity
-public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter{
+public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter implements WebMvcConfigurer
+{
 
 	@Autowired
 	UserDetailsService userDetailsService;
 	
 	
+	@Override
+	public void addViewControllers(ViewControllerRegistry registry) {
+		// TODO Auto-generated method stub
+		registry.addViewController("/login").setViewName("login");	//Map this URL to this page
+	}
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 //		auth.inMemoryAuthentication().passwordEncoder(NoOpPasswordEncoder.getInstance()).
@@ -40,7 +49,9 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter{
 		.antMatchers("/user/**").permitAll()
 		.antMatchers("/**").permitAll()
 		.antMatchers("/home").permitAll()
-		.and().formLogin()//.loginPage("/login").defaultSuccessUrl("/welcome").loginProcessingUrl("/login")
+		.and().formLogin().loginPage("/login")
+//		.loginProcessingUrl("/login")
+		.failureUrl("/login?error").permitAll()
 		.and().logout().logoutUrl("/logout").logoutSuccessUrl("/home")
 		.invalidateHttpSession(true)
 		.deleteCookies("JSESSIONID")
