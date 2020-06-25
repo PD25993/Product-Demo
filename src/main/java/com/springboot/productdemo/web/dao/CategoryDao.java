@@ -9,13 +9,13 @@ import org.springframework.stereotype.Service;
 
 import com.springboot.productdemo.web.models.Category;
 import com.springboot.productdemo.web.models.Product;
-import com.springboot.productdemo.web.repositories.ICategoryRepository;
+import com.springboot.productdemo.web.repositories.IProductCategoryRepository;
 
 @Service
 public class CategoryDao {
 	
 	@Autowired
-	ICategoryRepository categoryRepository;
+	IProductCategoryRepository categoryRepository;
 	
 	public List<Category> getAllCategories()  {
 		return categoryRepository.findAll();

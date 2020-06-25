@@ -23,16 +23,16 @@ import lombok.ToString;
 
 @Entity
 //@Getter
-@Setter
+//@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 public class Category { 
 	@Id
-	@Column(name = "category_id")
+	//@Column(name = "category_id")
 	private Integer id;
 	private String categoryName;
-	@OneToMany(mappedBy = "category_id", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
 	private Set<Product> products;
 	
 	public Integer getId() {
@@ -44,7 +44,14 @@ public class Category {
 	public Set<Product> getProducts() {
 		return null;
 	}
-	
-	
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+	public void setProducts(Set<Product> products) {
+		this.products = products;
+	}
 
 }

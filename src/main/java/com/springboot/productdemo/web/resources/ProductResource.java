@@ -29,6 +29,12 @@ public class ProductResource {
 	@Autowired
 	ProductDao productDao;
 	
+	@GetMapping(value="/findbycategory/{category}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Product> getProductByCategory(@PathVariable(value = "category") String category) {
+		System.out.println("category : " + Integer.parseInt(category));
+        return productDao.getProductByCategoryID(Integer.parseInt(category));
+    }
+	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE/* ,value = "/product" */)
     public ResponseEntity<List<Product>> getAllProducts()  {
         List<Product> productList = productDao.getAllProducts();

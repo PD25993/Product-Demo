@@ -32,9 +32,9 @@
 			<tr>
 				<td>Category :</td>
 				<td>
-					<form:select path="category_id" >
+					<form:select path="category" >
 					<c:forEach var="category" items="${listCategory}">
-					<form:option value="${category.id}">${category.categoryName} </form:option>
+					<form:option value="${category.id}">${category.categoryName}</form:option>
 					</c:forEach>
 					</form:select>
 				</td>

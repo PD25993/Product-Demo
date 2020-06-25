@@ -11,6 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springboot.productdemo.web.models.Product;
 
 @Service
@@ -51,6 +55,17 @@ public class ProductMvcService {
 		return updatedProduct; 
 	}
 
+	public List<Product> retrieveProductByCategoryId(String category) throws JsonMappingException, JsonProcessingException {
+//		List<Product> productList = null;
+//		String response = restTemplate.getForObject(REQUEST_URI+"/findbycategory/"+ category, String.class); 
+//		ObjectMapper mapper = new ObjectMapper();
+//        productList = mapper.readValue(response, new TypeReference<List<Product>>(){});
+//		return productList;	
+		ResponseEntity<Product[]> response = restTemplate.getForEntity(REQUEST_URI+"/findbycategory/"+category, Product[].class);
+		return Arrays.asList(response.getBody());
+	}
+
+	
 	public void addProduct(Product product) {
 		//RestTemplate restTemplate=new RestTemplate();
 		/*

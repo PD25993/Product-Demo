@@ -40,6 +40,12 @@ public class ProductDao {
 			return null;
 		}
 	}
+	
+	public List<Product> getProductByCategoryID(Integer category)
+	{
+		List<Product> productDetailsFindByCategoryId = productRepository.findByCategoryId(category);
+		return productDetailsFindByCategoryId;
+	}
 
 	@CachePut(value="product-cache")
 	public Product createProduct(Product productEntity) 
@@ -54,7 +60,7 @@ public class ProductDao {
 				newEntity.setId(productEntity.getId());
 				newEntity.setProductName(productEntity.getProductName());
 				newEntity.setProductCode(productEntity.getProductCode());
-				newEntity.setCategory_id(productEntity.getCategory_id());
+				newEntity.setCategory(productEntity.getCategory());
 				newEntity.setProductPrice(productEntity.getProductPrice());
 
 				newEntity = productRepository.saveAndFlush(newEntity);
@@ -85,7 +91,7 @@ public class ProductDao {
 			existingProduct.setId(productEntity.getId());
 			existingProduct.setProductName(productEntity.getProductName());
 			existingProduct.setProductCode(productEntity.getProductCode());
-			existingProduct.setCategory_id(productEntity.getCategory_id());
+			existingProduct.setCategory(productEntity.getCategory());
 			existingProduct.setProductPrice(productEntity.getProductPrice());
 
 			existingProduct = productRepository.save(existingProduct);

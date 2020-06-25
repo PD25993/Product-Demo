@@ -3,15 +3,19 @@ package com.springboot.productdemo.web.controllers;
 import java.io.IOException;
 import java.util.List;
 
+import javax.websocket.server.PathParam;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.springboot.productdemo.web.models.Category;
 import com.springboot.productdemo.web.models.Product;
 import com.springboot.productdemo.web.services.CategoryMvcService;
@@ -45,13 +49,15 @@ public class ProductMvcController {
 		model.setViewName("show-product");
 		model.addObject("activeUserListProduct","active");
 		model.addObject("listProducts",productMvcService.retrieveAllProducts());
-		for(Product p : productMvcService.retrieveAllProducts())
-		{
-		System.out.println("productMvcService.retrieveAllProducts() - "+p.getCategory_id());
-		}
+		model.addObject("listCategory",categoryMvcService.retrieveAllCategorys());
+//		for(Product p : productMvcService.retrieveAllProducts())
+//		{
+//		System.out.println("productMvcService.retrieveAllProducts() - "+p.getCategory());
+//		}
 		System.out.println("In showProduct");
 		return model;
 	}
+	
 	@RequestMapping(value="/user/home")
 	public ModelAndView loadUserHome(ModelAndView model) {	
 		System.out.println("In loadUserHome");
@@ -61,6 +67,28 @@ public class ProductMvcController {
 		model.setViewName("welcome");
 		model.addObject("activeWelcome","active");
 		return model;
+	}
+	
+	@RequestMapping(value="/user/productByCategory")	//PathParam to get the id
+	public String showProductByCategory(Model model,@PathParam("category") String category) {
+		System.out.println("Category**"+category);
+		if(category == null)
+		{
+			category = "";
+		}
+		if(category.equals("") || category.equalsIgnoreCase("all"))
+		{
+			return "redirect:/user/listproduct";
+		}else {
+			try {
+				model.addAttribute("listProducts",productMvcService.retrieveProductByCategoryId(category));
+				model.addAttribute("listCategory", categoryMvcService.retrieveAllCategorys());
+			} catch (NumberFormatException | JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return "show-product";
+		}
 	}
 	
 	@RequestMapping(value="/login")
@@ -109,9 +137,37 @@ public class ProductMvcController {
 		model.addObject("role", authDetail.getAuthorities());
 		model.setViewName("show-product");
 		model.addObject("listProducts",productMvcService.retrieveAllProducts());
+		model.addObject("listCategory",categoryMvcService.retrieveAllCategorys());
 		model.addObject("activeListProduct","active");
 		model.addObject("userName",authDetail.getName());
 		return model;
+	}
+	
+	@RequestMapping(value="/admin/productByCategory")	//PathParam to get the id
+	public String showProductByCategoryForAdmin(Model model,@PathParam("category") String category) {
+		
+		Authentication authDetail = SecurityContextHolder.getContext().getAuthentication();
+		model.addAttribute("role", authDetail.getAuthorities());
+		model.addAttribute("userName",authDetail.getName());
+		
+		System.out.println("role**"+authDetail.getAuthorities());
+		if(category == null)
+		{
+			category = "";
+		}
+		if(category.equals("") || category.equalsIgnoreCase("all"))
+		{
+			return "redirect:/admin/listproduct";
+		}else {
+			try {
+				model.addAttribute("listProducts",productMvcService.retrieveProductByCategoryId(category));
+				model.addAttribute("listCategory", categoryMvcService.retrieveAllCategorys());
+			} catch (NumberFormatException | JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return "show-product";
+		}
 	}
 
 //	@RequestMapping(value="/admin/manageproduct")
@@ -158,6 +214,7 @@ public class ProductMvcController {
 		List<Category> listCategory=categoryMvcService.retrieveAllCategorys();
 		if(null != productDetailsReturnByRest) {
 			model.addObject("listCategory",listCategory);
+			model.addObject("selectrow",productDetailsReturnByRest.getCategory());
 			model.addObject("command",productDetailsReturnByRest);
 			model.addObject("activeMngProduct","active");
 			model.addObject("userName",authDetail.getName());

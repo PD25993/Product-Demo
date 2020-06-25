@@ -32,7 +32,7 @@ public class CategoryMvcService {
 	public Category retrieveCategoryById(Integer id) {
 		Map<String, Integer> params = new HashMap<String, Integer>();
 	    System.out.println("Id : " + id);
-		Category updatedCategory = restTemplate.getForObject(REQUEST_URI+"/"+ id, Category.class,params); 
+	    Category updatedCategory = restTemplate.getForObject(REQUEST_URI+"/"+ id, Category.class,params); 
 		return updatedCategory; 
 	}
 

@@ -30,7 +30,7 @@ public class CategoryResource {
 
 	@GetMapping(value = "/{categoryId}" , produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Category> getCategoryId(@PathVariable(value = "categoryId") Integer categoryId) {
-    	Category categoryDetailById = new Category();
+		Category categoryDetailById = new Category();
     	Optional<Category> categoryById = categoryDao.getCategoryById(categoryId);
     	categoryDetailById = categoryById.get();
         if(null != categoryDetailById)

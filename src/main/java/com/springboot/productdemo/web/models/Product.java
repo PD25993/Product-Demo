@@ -1,6 +1,7 @@
 package com.springboot.productdemo.web.models;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,8 +26,7 @@ import lombok.ToString;
 
 @Entity
 @Table(name="Products")
-@Getter
-@Setter
+
 @NoArgsConstructor
 @AllArgsConstructor
 //@ToString -- JSON error 
@@ -44,9 +44,42 @@ public class Product {
 	@Positive
 	@NotNull
 	private Double productPrice;
-	@ManyToOne
-    @JoinColumn(name = "category_id")
+	@ManyToOne(fetch = FetchType.EAGER)	
+    @JoinColumn(name = "categoryid")
 	//@JsonIgnore	
-	private Category category_id;
+	private Category category;
+	
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public String getProductCode() {
+		return productCode;
+	}
+	public void setProductCode(String productCode) {
+		this.productCode = productCode;
+	}
+	public String getProductName() {
+		return productName;
+	}
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+	public Double getProductPrice() {
+		return productPrice;
+	}
+	public void setProductPrice(Double productPrice) {
+		this.productPrice = productPrice;
+	}
+	public Category getCategory() {
+		return category;
+	}
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+	
+	
 		
 }
